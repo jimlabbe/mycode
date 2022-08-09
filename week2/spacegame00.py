@@ -1,20 +1,33 @@
 #!/usr/bin/python3
-
+import os
 # Replace RPG starter project with this code when new instructions are live
+os.system("clear")
+print('PARHELION: A SPACE SURVIVAL GAME')
+name = input('Enter your name?')
 
 def showInstructions():
   #print a main menu and the commands
-  print('''
-RPG Game
+  print("""
 ========
+You are a junior engineer aboard the Parhelion, bound towards a deep space terraforming 
+colony. After the Parhelion escapes orbit, you enter your autohomeostasis pod to spend a 
+majority of the trip in peaceful sleep. You awaken groggily as the emergency awaken injects you with the combination of restoratives, and your pod cracks open slightly. The stinging
+acrid smell of burnt metal seeps into your pod. If you push your pod door, you can
+probably free yourself from the pod. """)
+  input("Try, 'push pod'")
+
+  print("""
+As you push the pod open, the wristband of
+your bodysuit flashes, and you see the OXYGEN meter drop from 100% down to 99%.
 Commands:
   go [direction]
   get [item]
-''')
+""")
 
 def showStatus():
   #print the player's current status
   print('---------------------------')
+  print('Oxygen saturation is at', oxy, '%')
   print('You are in the ' + currentRoom)
   #print the current inventory
   print('Inventory : ' + str(inventory))
@@ -26,25 +39,26 @@ def showStatus():
 #an inventory, which is initially empty
 inventory = []
 
+
 #a dictionary linking a room to other rooms
 ## A dictionary linking a room to other rooms
 rooms = {
 
-            'Hall' : {
-                  'south' : 'Kitchen',
-                  'east'  : 'Dining Room',
+            'Crew Stasis Bay 9' : {
+                  'south' : 'P-Way',
+                  'east'  : 'Utility Locker',
                   'item'  : 'key'
                 },
 
-            'Kitchen' : {
+            'P-Way' : {
                   'north' : 'Hall',
+                  'south' : 'Bridge',
                   'item'  : 'monster',
                 },
-            'Dining Room' : {
+            'Utility Locker' : {
                   'west' : 'Hall',
                   'south': 'Garden',
                   'item' : 'potion',
-                  'north' : 'Pantry',
                },
             'Garden' : {
                   'north' : 'Dining Room'
@@ -56,13 +70,13 @@ rooms = {
          }
 
 #start the player in the Hall
-currentRoom = 'Hall'
+currentRoom = 'Crew Stasis Bay 9'
 
 showInstructions()
-
+oxy = int(101)
 #loop forever
 while True:
-
+  oxy -= 2
   showStatus()
 
   #get the player's next 'move'
@@ -78,7 +92,7 @@ while True:
   move = move.lower().split(" ", 1)
 
   #if they type 'go' first
-  if move[0] == 'go':
+  if move[0] == ['go', 'walk', 'run', 'move']:
     #check that they are allowed wherever they want to go
     if move[1] in rooms[currentRoom]:
       #set the current room to the new room

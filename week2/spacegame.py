@@ -22,6 +22,8 @@ your bodysuit flashes, and you see the OXYGEN meter drop from 100% down to 99%.
 Commands:
   go [direction]
   get [item]
+  look []
+  examine [object]
 """)
 
 def showStatus():
@@ -32,22 +34,40 @@ def showStatus():
   #print the current inventory
   print('Inventory : ' + str(inventory))
   #print an item if there is one
-  if "item" in rooms[currentRoom]:
-    print('You see a ' + rooms[currentRoom]['item'])
+ # if "item" in rooms[currentRoom]:
+ #   print('You see a ' + rooms[currentRoom]['item'])
   print("---------------------------")
 
 #an inventory, which is initially empty
 inventory = []
-
+body = int(3)
+skills = []
 
 #a dictionary linking a room to other rooms
 ## A dictionary linking a room to other rooms
+def objects(target):
+    if currentRoom == 'Crew Stasis Bay 9':
+        if target == 'console':
+            print('its a console')
+        elif target == 'pod':
+            print('theres a tool under the pod')
+        return 0
+    elif room == 'passage':
+        print('youre in a passage')
+    return 0
+        
+
+
 rooms = {
 
             'Crew Stasis Bay 9' : {
                   'south' : 'P-Way',
                   'east'  : 'Utility Locker',
-                  'item'  : 'key'
+                  'item'  : 'L-tool',
+                  'object'  : {
+                      'console',
+                      'pod',
+                              },
                 },
 
             'P-Way' : {
@@ -92,19 +112,17 @@ while True:
   move = move.lower().split(" ", 1)
 
   #if they type 'go' first
-  if move[0] == ['go', 'walk', 'run', 'move']:
-    #check that they are allowed wherever they want to go
-    if move[1] in rooms[currentRoom]:
-      #set the current room to the new room
-      currentRoom = rooms[currentRoom][move[1]]
-    #there is no door (link) to the new room
-    else:
-        print('You can\'t go that way!')
+
+#if player looks for something
+  if move[0] == 'look':
+    objects(move[1])
+  else:
+    print("It's not worth looking at")
 
   #if they type 'get' first
-  if move[0] == 'get' :
+  if move[0] == 'get':
     #if the room contains an item, and the item is the one they want to get
-    if "item" in rooms[currentRoom] and move[1] in rooms[currentRoom]['item']:
+    if 'item' in rooms[currentRoom] and move[1] in rooms[currentRoom]['item']:
       #add the item to their inventory
       inventory += [move[1]]
       #display a helpful message
@@ -115,13 +133,17 @@ while True:
     else:
       #tell them they can't get it
       print('Can\'t get ' + move[1] + '!')
-      
+ 
   ## Define how a player can win
-  if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
-    print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+  if currentRoom == 'bridge' and 'key' in inventory and 'potion' in inventory:
+    print('You push the button and the whole ship trembles as it is pulled towards a wonderous destinations...YOU WIN!!')
     break
 
-  ## If a player enters a room with a monster
-  elif 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
-    print('A monster has got you... GAME OVER!')
+  ## If player gets hurt enough times
+  if body <= 0:
+    print("Your body is unable to sustain any more damage...you die.")
+    break
+  ## If a player runs out of air
+  elif oxy <= 0:
+    print('gasping for air, darkness creeps in from the edges of your vision... GAME OVER!')
     break
