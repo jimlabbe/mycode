@@ -31,3 +31,18 @@ class Cheat_Loaded_Dice(Player): # inheritance of Player
               self.dice[i] += 1
           i += 1
 
+class Cheat_Sevens(Player):
+    def cheat(self):
+        self.dice = []
+        betteravg = randint(1,100)
+        for x in range(3):
+            if betteravg >= 60:
+                self.dice.append(randint(5,6))
+            elif 30 >= betteravg > 60:
+                self.dice.append(randint(3,4))
+            elif 20 >= betteravg > 30:
+                self.dice.append(2)
+            else:
+                self.dice.append(1)
+                    
+
