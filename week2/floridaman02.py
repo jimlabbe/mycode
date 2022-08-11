@@ -1,33 +1,28 @@
 #!/usr/bin/python3
 import requests
 import argparse
+import pandas
 
 url ="https://newsapi.org/v2/top-headlines?country=us&q=+man"
 def hollar(newskey):
     thestory = requests.get(f"{url}&apikey={newskey}")
-    thestory = thestory.json().keys()
+    thestory = thestory.json()
     with open('rawstory.txt', 'w') as f:
         for key, value in thestory.items():
             f.write('%s:%s\n' % (key, value))
     return thestory
 
-def get_title():
-    with open('rawstory.txt', 'r') as foo:
-        for line in foo:
-            if "title" in line:
-                print(line)
-        
 def main():
     try:
         with open('rawstory.txt', 'r') as f:
-            mainstory = f
+            mainstory = f.read()
         print("Story Loaded from file!")
     except:
         with open(args.key) as pkey:
             newskey = pkey.read().rstrip('\n') #harvest the key from the file, ignoring empty space to create newskey for use
         mainstory = hollar(newskey)
+        print(mainstory)
         print("API Downloaded!")
-    get_title()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser() #construct a parser
