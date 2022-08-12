@@ -11,7 +11,7 @@ def scrape_web():
     #Thanks StackOverflow
 
     page = requests.get(url, headers=agent) #requests the page data
-    soup = bs(page.content, "html.parser")
+    soup = bs(page.text, "html.parser")
     results = soup.find_all("span", id="html-attribute-name") #how find element?
     print(results)
     #content is chosen over .text to avoid problems with character encoding. The second argument ensures
