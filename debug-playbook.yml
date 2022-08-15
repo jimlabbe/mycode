@@ -1,0 +1,26 @@
+---
+- name: How to output to the screen with debug
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+      vendorship: '192.168.22.55'
+
+  tasks:
+  - name: print to screen
+    debug: 
+        msg: "welcome to ansible"
+
+  - name: print a message vari
+    debug:
+        msg: "The vendor IP is: {{ vendorip }}"
+
+  - name: print just variable
+    debug:
+        var: vendorip
+
+  - name: print only with verbosity
+    ansible.builtin.debug:
+        var: vendorip
+        verbosity: 2
