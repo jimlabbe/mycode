@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: false
+
+  tasks:
+   - name: "Learning about debug module"
+     debug:
+         msg: "Debug mod allows us to print to screen --> {{item}}"
+     loop:
+     - "1) hyphen is an item on a list"
+     - "2) second item"
+     - "3) third item"
+     - "item var is replaced by item from loop list"
+
+
