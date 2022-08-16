@@ -1,0 +1,16 @@
+---
+- name: Playbook - Tuesday Challenge
+  hosts: planetexpress:!farnsworth
+  connection: ssh
+  gather_facts: yes
+
+  tasks:
+   - name: print out the variable named "result"
+     debug:
+       var: result
+       
+   - apt:
+       name: sl
+       state: present
+     name: using apt to install sl
+     register: result

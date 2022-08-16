@@ -49,12 +49,30 @@ def main():
     url = scrape_web("https://www.tasteofhome.com/recipes/?_cooking-style=easy&_meal-types=lunch")
     if url is not None:
         html = bs(url, "html.parser")
-    recipes = set()
-    #sets are used over lists as it handles unorganized data better. It only permits unique values
-    
+    #sets are iiused over lists as it handles unorganized data better. It only permits unique values
     #data= html.select("script[type=application/ld+json]")
+
     data= html.find_all("script",type="application/ld+json")
-    print(data)
+
+
+#    print(len(data[1]["name"]))
+
+#recipes.add(data[d]['name'])
+#    print(recipes)
+
+#    for s in range(len(data)):
+#        if data[s]['name'] == to_find:
+#            print(data[s]['name'])
+
+#    keys = ['name']
+#    recipes = {x:data[x] for x in keys}
+
+#    for name in data:
+#       print(data.keys())
+#        data['name']
+
+#    for name in data:
+#       data= data.split('\n'
     
     #for rname in html.select('ItemListElement.json()'):
         #print(rname)
