@@ -8,24 +8,20 @@ from bs4 import BeautifulSoup as bs
 
 def scrape_web(url):
     agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) Chrome/59.0.3071.115'}
-    #Some websites don't like being scraped, but including an Agent browser fools the blocker.
-    #Thanks StackOverflow
-    
     try:
         with closing(get(url, stream=True, headers=agent)) as results: 
-        #stream=True means requests cant release the connection until closed
-        #closing() closes results at the end of the block
-
             if html_checker(results):
                 return results.content
-            # .content() reads HTML off the requests object  
             else:
                 return None
-    
     except RequestException as e:
         log_error('Error during requests to {0} : {1}'.format(url, str(e)))
         return None
-
+    #Some websites don't like being scraped, but an Agent object fools the blocker.
+        #closing() closes results at the end of the block
+        #stream=True means requests cant release the connection until closed
+        # .content() reads HTML off the requests object  
+    
 def html_checker(results):
     #check if response it html, return true if so
     results_type = results.headers['Content-Type'].lower()
@@ -46,14 +42,17 @@ def log_error(e):
 
 
 def main():
-    url = scrape_web("https://www.tasteofhome.com/recipes/?_cooking-style=easy&_meal-types=lunch")
+    url = scrape_web("https://www.tasteofhome.com/recipes/guacamole-chicken-salad-sandwiches")
     if url is not None:
-        html = bs(url, "html.parser")
-    #sets are iiused over lists as it handles unorganized data better. It only permits unique values
-    #data= html.select("script[type=application/ld+json]")
+        html = bs(url, "lxml")
+        data = html.find_all("recipeIngredient").text()
+        print(type(data))
+        print(data)
 
-    data= html.find_all("script",type="application/ld+json")
 
+   #data= html.select("script[type=application/ld+json]")
+   # data= html.find_all("script",type="application/ld+json")
+    #sets are used over lists as it handles unorganized data better. It only permits unique values
 
 #    print(len(data[1]["name"]))
 
